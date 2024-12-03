@@ -10,7 +10,14 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useState, useRef } from 'react';
 
 
-export default function ControlWeather() {
+interface ControlWeatherProps {
+    selectedVariable: string;
+    onVariableChange: (variable: string) => void;
+}
+
+
+export default function ControlWeather({ selectedVariable, onVariableChange }: ControlWeatherProps) {
+
 
     {/* Constante de referencia a un elemento HTML */ }
     const descriptionRef = useRef<HTMLDivElement>(null);
@@ -19,18 +26,17 @@ export default function ControlWeather() {
     let [selected, setSelected] = useState(-1)
 
     {/* Manejador de eventos */}
-        const handleChange = (event: SelectChangeEvent) => {
-
-        let idx = parseInt(event.target.value)
-        // alert( idx );
-        setSelected( idx );
-
-        {/* Modificación de la referencia descriptionRef */}
+    const handleChange = (event: SelectChangeEvent) => {
+        const variable = event.target.value;
+        onVariableChange(variable);
+      
+        // Actualizar la descripción
+        const idx = items.findIndex((item) => item.value === variable);
         if (descriptionRef.current !== null) {
-            descriptionRef.current.innerHTML = (idx >= 0) ? items[idx]["description"] : ""
+          descriptionRef.current.innerHTML = idx >= 0 ? items[idx]['description'] : '';
         }
-
     };
+      
 
     {/* Arreglo de objetos */}
     let items = [
