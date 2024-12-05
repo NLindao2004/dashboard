@@ -15,9 +15,13 @@ const TomorrowWeatherCard: React.FC<TomorrowWeatherCardProps> = ({ temperature, 
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: 'center', // Centra el contenido verticalmente
         textAlign: 'center',
+        width: '300px',
+        height: '485px',
       }}
     >
+
       <Typography variant="h6" component="div" color="primary">
         Mañana
       </Typography>

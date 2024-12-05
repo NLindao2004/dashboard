@@ -69,7 +69,7 @@ function App() {
         const xml = parser.parseFromString(savedTextXML, 'application/xml');
 
         // Datos para las tarjetas
-        const temperature = parseFloat(xml.getElementsByTagName('temperature')[0]?.getAttribute('value') || '0').toFixed(1);
+        const temperature = (parseFloat(xml.getElementsByTagName('temperature')[0]?.getAttribute('value') || '0') - 273.15).toFixed(1);
         const weatherDescription = xml.getElementsByTagName('symbol')[0]?.getAttribute('name') || '';
         const visibility = (parseFloat(xml.getElementsByTagName('visibility')[0]?.getAttribute('value') || '0') / 1000).toFixed(1) + ' km';
         const humidity = xml.getElementsByTagName('humidity')[0]?.getAttribute('value') + '%';
@@ -120,6 +120,45 @@ function App() {
         setPrecipitationData(precipitationValues);
         setCloudsData(cloudsValues);
         setTimeLabels(labels);
+
+
+        
+        let tomorrowTemperature = "";
+        let tomorrowWeatherName = "";
+
+        // Obtiene la fecha actual y el día siguiente
+        const currentDate = new Date();
+        const tomorrowDate = new Date(currentDate);
+        tomorrowDate.setDate(currentDate.getDate() + 1);
+
+        // Convierte el día siguiente al formato de fecha YYYY-MM-DD
+        const tomorrowString = tomorrowDate.toISOString().split("T")[0];
+
+        // Recorre los elementos <time> para encontrar el bloque correspondiente
+        for (let i = 0; i < times.length; i++) {
+          const time = times[i];
+          const fromDate = time.getAttribute("from") || "";
+          const fromDateString = fromDate.split("T")[0]; // Obtiene la parte de la fecha (YYYY-MM-DD)
+
+          // Si la fecha corresponde al día siguiente
+          if (fromDateString === tomorrowString) {
+            tomorrowTemperature = (
+              parseFloat(
+                time.getElementsByTagName("temperature")[0]?.getAttribute("value") || "0"
+              ) - 273.15
+            ).toFixed(1); // Convierte Kelvin a Celsius
+            tomorrowWeatherName =
+              time.getElementsByTagName("symbol")[0]?.getAttribute("name") || "";
+            break; // Detiene el bucle al encontrar la coincidencia
+          }
+        }
+
+
+        setTomorrowData({
+          temperature: tomorrowTemperature,
+          weatherName: tomorrowWeatherName,
+        });
+        
       }
     };
 
@@ -192,14 +231,16 @@ function App() {
       </Grid>
 
       <Grid container spacing={5}>
-        {/* Tarjeta del Clima de Mañana */}
-        <Grid size={{ xs: 12, md: 6 }}>
-          <TomorrowWeatherCard
-            temperature={tomorrowData.temperature}
-            weatherName={tomorrowData.weatherName}
-          />
-        </Grid>
+      <Grid size={12}>
+        
+        <TomorrowWeatherCard
+          temperature={tomorrowData.temperature}
+          weatherName={tomorrowData.weatherName}
+          
+        />
       </Grid>
+    </Grid>
+
 
       
 
