@@ -29,6 +29,11 @@ export default function WeatherCard({
         justifyContent: 'center',
         textAlign: 'center',
         borderRadius: 2,
+        backgroundImage: 'url("https://i.pinimg.com/736x/5c/f3/86/5cf38662a2adf089d77a56f3d1e5c2c8.jpg")', // URL de la imagen
+        backgroundSize: 'cover', // Ajustar imagen para cubrir todo
+        backgroundPosition: 'center', // Centrar la imagen
+        color: '#ffffff', // Cambiar el color del texto a blanco para mejor contraste
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', // Sombra
       }}
     >
       <Typography variant="h6" color="primary" gutterBottom>
