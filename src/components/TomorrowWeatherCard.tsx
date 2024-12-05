@@ -5,9 +5,11 @@ import Typography from '@mui/material/Typography';
 interface TomorrowWeatherCardProps {
   temperature: string; // Temperatura para mañana
   weatherName: string; // Descripción del clima (name del símbolo)
+  imageUrl?: string; // Nueva prop opcional para la URL de la imagen
+
 }
 
-const TomorrowWeatherCard: React.FC<TomorrowWeatherCardProps> = ({ temperature, weatherName }) => {
+const TomorrowWeatherCard: React.FC<TomorrowWeatherCardProps> = ({ temperature, weatherName,  imageUrl }) => {
   return (
     <Paper
       sx={{
@@ -19,7 +21,9 @@ const TomorrowWeatherCard: React.FC<TomorrowWeatherCardProps> = ({ temperature, 
         textAlign: 'center',
         width: '300px',
         height: '485px',
-        backgroundImage: 'url("https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/cloudsAndSunny.webp")', // URL de la imagen
+        backgroundImage: imageUrl
+        ? `url(${imageUrl})`
+        : `url('https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/Lluvia.webp')`, // Usamos la imagen si se proporciona
         backgroundSize: 'cover', // Ajustar imagen para cubrir todo
         backgroundPosition: 'center', // Centrar la imagen
         color: '#ffffff', // Cambiar el color del texto a blanco para mejor contraste

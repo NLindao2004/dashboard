@@ -2,6 +2,7 @@ import './App.css';
 import Grid from '@mui/material/Grid2';
 import TableWeather from './components/TableWeather';
 import ControlWeather from './components/ControlWeather';
+import WeatherCardWind from './components/WeatherCardWind';
 import LineChartWeather from './components/LineChartWeather';
 import WeatherCard from './components/WeatherCard';
 import Item from './components/Item';
@@ -35,6 +36,7 @@ function App() {
     windDirection: '',
     windGust: '',
     cloudCoverage: '',
+    windName: '',
   });
 
   const [tomorrowData, setTomorrowData] = useState({
@@ -42,7 +44,19 @@ function App() {
     weatherName: "",
   });
   
+  const Images: { [key: string]: string } = {
+    GentleBreeze: "https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/Gentle%20Breeze.webp",
+    LightBreeze: "https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/Light%20breeze.webp",
+    Calm: "https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/Calm.webp",
+    lightrain: "https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/light%20rain.webp",
+    overcastclouds: "https://github.com/NLindao2004/dashboard/blob/main/src/Imagenes/overcast%20clouds.webp",
+    brokenclouds: "https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/broken%20clouds.webp",
+    fewclouds: "https://github.com/NLindao2004/dashboard/blob/main/src/Imagenes/few%20clouds.webp",
+    scatteredclouds: "https://github.com/NLindao2004/dashboard/blob/main/src/Imagenes/scattered%20clouds.webp",
 
+  };
+
+  
   useEffect(() => {
     const fetchData = async () => {
       let savedTextXML = localStorage.getItem("openWeatherMap") || "";
@@ -78,6 +92,8 @@ function App() {
         const windDirection = xml.getElementsByTagName('windDirection')[0]?.getAttribute('code') || '';
         const windGust = xml.getElementsByTagName('windGust')[0]?.getAttribute('gust') + ' m/s';
         const cloudCoverage = xml.getElementsByTagName('clouds')[0]?.getAttribute('all') + '%';
+        const windName = xml.getElementsByTagName('windSpeed')[0]?.getAttribute('name') ?? '';
+
 
         setWeatherData({
           temperature,
@@ -89,6 +105,7 @@ function App() {
           windDirection,
           windGust,
           cloudCoverage,
+          windName,
         });
 
         // Datos para la tabla y el gráfico
@@ -181,12 +198,13 @@ function App() {
               { label: 'Humedad', value: weatherData.humidity },
               { label: 'Presión', value: weatherData.pressure },
             ]}
+            imageUrl={Images[weatherData.weatherDescription.replace(/\s+/g, '')]}
           />
         </Grid>
         <Grid size={6}>
-          <WeatherCard
+          <WeatherCardWind
             title="Viento"
-            subtitle="Gentle Breeze"
+            subtitle={weatherData.windName}
             mainValue={weatherData.windSpeed}
             mainUnit="m/s"
             description="Sobre el viento de hoy"
@@ -195,6 +213,7 @@ function App() {
               { label: 'Dirección', value: weatherData.windDirection },
               { label: 'Nubes', value: weatherData.cloudCoverage },
             ]}
+            imageUrl={Images[weatherData.windName.replace(/\s+/g, '')]}
           />
         </Grid>
       </Grid>

@@ -34,7 +34,7 @@ export default function WeatherCard({
         borderRadius: 2,
         backgroundImage: imageUrl
           ? `url(${imageUrl})`
-          : `url('https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/default.webp')`, // Usamos la imagen si se proporciona
+          : `url('https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/defaultWind.webp')`, // Usamos la imagen si se proporciona
         backgroundSize: 'cover', // Ajustar imagen para cubrir todo
         backgroundPosition: 'center', // Centrar la imagen
         color: '#ffffff', // Cambiar el color del texto a blanco para mejor contraste
