@@ -5,7 +5,6 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useRef } from 'react';
 
 interface ControlWeatherProps {
   selectedVariable: string; // Variable actualmente seleccionada (humidity, precipitation, clouds)
@@ -16,25 +15,19 @@ export default function ControlWeather({
   selectedVariable,
   onVariableChange,
 }: ControlWeatherProps) {
-  // Referencia para mostrar la descripción de la variable seleccionada
-  const descriptionRef = useRef<HTMLDivElement>(null);
-
   // Lista de variables meteorológicas
   const items = [
     {
       value: 'precipitation',
       name: 'Precipitación',
-      description: 'Cantidad de agua que cae sobre una superficie en un período específico.',
     },
     {
       value: 'humidity',
       name: 'Humedad',
-      description: 'Cantidad de vapor de agua presente en el aire, generalmente expresada como un porcentaje.',
     },
     {
       value: 'clouds',
       name: 'Nubosidad',
-      description: 'Grado de cobertura del cielo por nubes, afectando la visibilidad y la cantidad de luz solar recibida.',
     },
   ];
 
@@ -42,12 +35,6 @@ export default function ControlWeather({
   const handleChange = (event: SelectChangeEvent) => {
     const variable = event.target.value;
     onVariableChange(variable); // Notificar a App.tsx sobre la selección
-
-    // Actualizar la descripción en el DOM
-    const selectedItem = items.find((item) => item.value === variable);
-    if (descriptionRef.current) {
-      descriptionRef.current.innerHTML = selectedItem ? selectedItem.description : '';
-    }
   };
 
   // Opciones del Select
@@ -83,9 +70,6 @@ export default function ControlWeather({
           </Select>
         </FormControl>
       </Box>
-
-      {/* Descripción dinámica */}
-      <Typography ref={descriptionRef} mt={2} component="p" color="text.secondary" />
     </Paper>
   );
 }

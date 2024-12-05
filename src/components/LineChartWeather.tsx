@@ -45,8 +45,8 @@ export default function LineChartWeather({
       }}
     >
       <LineChart
-        width={400}
-        height={250}
+        width={800}
+        height={350}
         series={[{ data, label }]} // Datos dinámicos basados en la selección
         xAxis={[{ scaleType: 'point', data: timeLabels }]} // Etiquetas de tiempo
       />
