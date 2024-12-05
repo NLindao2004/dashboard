@@ -9,6 +9,8 @@ interface WeatherCardProps {
   mainUnit: string;
   description: string;
   details: { label: string; value: string }[];
+  imageUrl?: string; // Nueva prop opcional para la URL de la imagen
+
 }
 
 export default function WeatherCard({
@@ -18,6 +20,7 @@ export default function WeatherCard({
   mainUnit,
   description,
   details,
+  imageUrl,
 }: WeatherCardProps) {
   return (
     <Paper
@@ -29,7 +32,9 @@ export default function WeatherCard({
         justifyContent: 'center',
         textAlign: 'center',
         borderRadius: 2,
-        backgroundImage: 'url("https://i.pinimg.com/736x/5c/f3/86/5cf38662a2adf089d77a56f3d1e5c2c8.jpg")', // URL de la imagen
+        backgroundImage: imageUrl
+          ? `url(${imageUrl})`
+          : undefined, // Usamos la imagen si se proporciona
         backgroundSize: 'cover', // Ajustar imagen para cubrir todo
         backgroundPosition: 'center', // Centrar la imagen
         color: '#ffffff', // Cambiar el color del texto a blanco para mejor contraste

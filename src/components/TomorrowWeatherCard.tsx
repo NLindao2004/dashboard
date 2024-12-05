@@ -19,6 +19,11 @@ const TomorrowWeatherCard: React.FC<TomorrowWeatherCardProps> = ({ temperature, 
         textAlign: 'center',
         width: '300px',
         height: '485px',
+        backgroundImage: 'url("https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/cloudsAndSunny.webp")', // URL de la imagen
+        backgroundSize: 'cover', // Ajustar imagen para cubrir todo
+        backgroundPosition: 'center', // Centrar la imagen
+        color: '#ffffff', // Cambiar el color del texto a blanco para mejor contraste
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', // Sombra
       }}
     >
 
