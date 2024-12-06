@@ -1,5 +1,6 @@
 import './App.css';
 import Grid from '@mui/material/Grid2';
+import Typography from '@mui/material/Typography';
 import TableWeather from './components/TableWeather';
 import ControlWeather from './components/ControlWeather';
 import WeatherCardWind from './components/WeatherCardWind';
@@ -196,6 +197,17 @@ function App() {
 
   return (
     <Grid container spacing={5}>
+
+      {/* Título Centrado */}
+      <Grid size={12}>
+        <Typography 
+          variant="h2" 
+          align="center" 
+          sx={{ fontSize: '32px', marginBottom: '24px' }}
+        >
+          Clima en Guayaquil - Hoy
+        </Typography>
+      </Grid>
       {/* Tarjetas */}
       <Grid container spacing={6} size={12}>
         <Grid size={6}>
