@@ -42,6 +42,7 @@ function App() {
   const [tomorrowData, setTomorrowData] = useState({
     temperature: "",
     weatherName: "",
+    imagen: "",
   });
   
   const Images: { [key: string]: string } = {
@@ -83,7 +84,7 @@ function App() {
         const xml = parser.parseFromString(savedTextXML, 'application/xml');
 
         // Datos para las tarjetas
-        const temperature = (parseFloat(xml.getElementsByTagName('temperature')[0]?.getAttribute('value') || '0') - 273.15).toFixed(1);
+        const temperature = (parseFloat(xml.getElementsByTagName('temperature')[0]?.getAttribute('value') || '0') - 273.15).toFixed(1)+ '°C';
         const weatherDescription = xml.getElementsByTagName('symbol')[0]?.getAttribute('name') || '';
         const visibility = (parseFloat(xml.getElementsByTagName('visibility')[0]?.getAttribute('value') || '0') / 1000).toFixed(1) + ' km';
         const humidity = xml.getElementsByTagName('humidity')[0]?.getAttribute('value') + '%';
@@ -142,21 +143,22 @@ function App() {
         
         let tomorrowTemperature = "";
         let tomorrowWeatherName = "";
-
+        let imageProbability = "";
+        
         // Obtiene la fecha actual y el día siguiente
         const currentDate = new Date();
         const tomorrowDate = new Date(currentDate);
         tomorrowDate.setDate(currentDate.getDate() + 1);
-
+        
         // Convierte el día siguiente al formato de fecha YYYY-MM-DD
         const tomorrowString = tomorrowDate.toISOString().split("T")[0];
-
+        
         // Recorre los elementos <time> para encontrar el bloque correspondiente
         for (let i = 0; i < times.length; i++) {
           const time = times[i];
           const fromDate = time.getAttribute("from") || "";
           const fromDateString = fromDate.split("T")[0]; // Obtiene la parte de la fecha (YYYY-MM-DD)
-
+        
           // Si la fecha corresponde al día siguiente
           if (fromDateString === tomorrowString) {
             tomorrowTemperature = (
@@ -164,17 +166,27 @@ function App() {
                 time.getElementsByTagName("temperature")[0]?.getAttribute("value") || "0"
               ) - 273.15
             ).toFixed(1); // Convierte Kelvin a Celsius
-            tomorrowWeatherName =
-              time.getElementsByTagName("symbol")[0]?.getAttribute("name") || "";
+            tomorrowWeatherName = time.getElementsByTagName("symbol")[0]?.getAttribute("name") || "";
+        
+            const probability = parseFloat(time.getElementsByTagName("precipitation")[0]?.getAttribute("value") || "0");
+        
+            // Asigna la imagen de acuerdo a la probabilidad de precipitación
+            if (probability > 0.6) { // Probabilidad mayor al 60%
+              imageProbability = "https://raw.githubusercontent.com/NLindao2004/dashboard/main/src/Imagenes/Lluvia.webp";
+            } else {
+              imageProbability = "https://raw.githubusercontent.com/NLindao2004/dashboard/main/src/Imagenes/sol.webp";
+            }
+        
             break; // Detiene el bucle al encontrar la coincidencia
           }
         }
-
-
+        
         setTomorrowData({
           temperature: tomorrowTemperature,
           weatherName: tomorrowWeatherName,
+          imagen: imageProbability,
         });
+        
         
       }
     };
@@ -191,7 +203,6 @@ function App() {
             title="Clima"
             subtitle={weatherData.weatherDescription}
             mainValue={weatherData.temperature}
-            mainUnit="°C"
             description="Sobre el clima de hoy"
             details={[
               { label: 'Visibilidad', value: weatherData.visibility },
@@ -206,7 +217,6 @@ function App() {
             title="Viento"
             subtitle={weatherData.windName}
             mainValue={weatherData.windSpeed}
-            mainUnit="m/s"
             description="Sobre el viento de hoy"
             details={[
               { label: 'Ráfaga', value: weatherData.windGust },
@@ -255,7 +265,7 @@ function App() {
         <TomorrowWeatherCard
           temperature={tomorrowData.temperature}
           weatherName={tomorrowData.weatherName}
-          
+          imageUrl={tomorrowData.imagen}
         />
       </Grid>
     </Grid>

@@ -31,13 +31,13 @@ const TomorrowWeatherCard: React.FC<TomorrowWeatherCardProps> = ({ temperature, 
       }}
     >
 
-      <Typography variant="h6" component="div" color="primary">
+      <Typography variant="h2" component="div" color="primary" sx={{ margin: '16px 0' }}>
         Mañana
       </Typography>
-      <Typography variant="subtitle1" color="textSecondary">
+      <Typography variant="h4" color="black" sx={{ margin: '16px 0' }}>
         {weatherName}
       </Typography>
-      <Typography variant="h3" component="div">
+      <Typography variant="h3" component="div" color='black' sx={{ margin: '16px 0' }}>
         {temperature} °C
       </Typography>
     </Paper>

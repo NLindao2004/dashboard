@@ -6,7 +6,7 @@ interface WeatherCardProps {
   title: string;
   subtitle: string;
   mainValue: string;
-  mainUnit: string;
+  mainUnit?: string;
   description: string;
   details: { label: string; value: string }[];
   imageUrl?: string; // Nueva prop opcional para la URL de la imagen
@@ -27,6 +27,7 @@ export default function WeatherCard({
       sx={{
         p: 3,
         display: 'flex',
+        height: '300px',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
@@ -41,26 +42,26 @@ export default function WeatherCard({
         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', // Sombra
       }}
     >
-      <Typography variant="h6" color="primary" gutterBottom>
+            <Typography variant="h2" color="primary" gutterBottom>
         {title}
       </Typography>
-      <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+      <Typography variant="h4" color="black" gutterBottom>
         {subtitle}
       </Typography>
-      <Typography variant="h3" component="div">
+      <Typography variant="h3" component="div" color='black'>
         {mainValue} <span style={{ fontSize: '1rem' }}>{mainUnit}</span>
       </Typography>
-      <Typography variant="body2" color="textSecondary" gutterBottom>
+      <Typography variant="h5" color="black" gutterBottom  >
         {description}
       </Typography>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {details.map((detail, index) => (
-          <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }}>
-            <Typography variant="body2" color="textSecondary">
-              {detail.label}
+        <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }} sx={{ backgroundColor: 'white', padding: '16px', borderRadius: '8px' }}>
+            <Typography variant="body1" color="textSecondary" sx={{ width: '100px' , fontWeight: 'bold'}}  >
+                {detail.label}
             </Typography>
-            <Typography variant="subtitle1">{detail.value}</Typography>
-          </Grid>
+            <Typography variant="subtitle1" sx={{ width: '100px' , color: 'black'}}  >{detail.value}</Typography>
+        </Grid>
         ))}
       </Grid>
     </Paper>
