@@ -8,17 +8,13 @@ import LineChartWeather from './components/LineChartWeather';
 import WeatherCard from './components/WeatherCard';
 import Item from './components/Item';
 import TomorrowWeatherCard from './components/TomorrowWeatherCard';
+import HamburgerMenu from './components/HamburgerMenu';
 import { useEffect, useState } from 'react';
 
-interface Indicator {
-  title?: String;
-  subtitle?: String;
-  value?: String;
-}
+
 
 function App() {
-  const [indicators, setIndicators] = useState<Indicator[]>([]);
-  const [owm, setOWM] = useState(localStorage.getItem("openWeatherMap"));
+  const [owm] = useState(localStorage.getItem("openWeatherMap"));
 
   const [items, setItems] = useState<Item[]>([]);
   const [humidityData, setHumidityData] = useState<number[]>([]);
@@ -76,6 +72,8 @@ function App() {
         const delay = hours * 3600000;
         const expiringTime = nowTime + delay;
 
+
+        // Guardamos los datos en localStorage
         localStorage.setItem("openWeatherMap", savedTextXML);
         localStorage.setItem("expiringTime", expiringTime.toString());
       }
@@ -173,7 +171,7 @@ function App() {
         
             // Asigna la imagen de acuerdo a la probabilidad de precipitación
             if (probability > 0.6) { // Probabilidad mayor al 60%
-              imageProbability = "https://raw.githubusercontent.com/NLindao2004/dashboard/main/src/Imagenes/Lluvia.webp";
+              imageProbability = "https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/Lluvia.webp";
             } else {
               imageProbability = "https://raw.githubusercontent.com/NLindao2004/dashboard/main/src/Imagenes/sol.webp";
             }
@@ -198,18 +196,28 @@ function App() {
   return (
     <Grid container spacing={5}>
 
-      {/* Título Centrado */}
-      <Grid size={12}>
-        <Typography 
-          variant="h2" 
-          align="center" 
-          sx={{ fontSize: '32px', marginBottom: '24px' }}
-        >
-          Clima en Guayaquil - Hoy
-        </Typography>
-      </Grid>
-      {/* Tarjetas */}
       <Grid container spacing={6} size={12}>
+        {/* Menú Hamburguesa */}
+        <Grid size={2}>
+          <HamburgerMenu />
+        </Grid>
+
+        {/* Título Centrado */}
+        <Grid size={8} container justifyContent="center">
+          <Typography 
+            variant="h2" 
+            align="center" 
+            sx={{ fontSize: '32px' }}
+          >
+            Clima en Guayaquil - Hoy
+          </Typography>
+        </Grid>
+
+        
+      </Grid>
+
+      {/* Tarjetas */}
+      <Grid container spacing={6} size={12} id="card">
         <Grid size={6}>
           <WeatherCard
             title="Clima"
@@ -241,7 +249,7 @@ function App() {
       </Grid>
 
  
-      <Grid container spacing={3}>
+      <Grid container spacing={3} id="grafica">
       {/* Contenedor de la gráfica y el selector */}
         <Grid
           size={{ xs: 12 }}
@@ -288,7 +296,7 @@ function App() {
 
 
       {/* Tabla */}
-      <Grid container spacing={6} size={12} >
+      <Grid container spacing={6} size={12} id="tabla">
         <Grid size={12}>
           <TableWeather itemsIn={items} />
         </Grid>

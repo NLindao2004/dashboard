@@ -42,7 +42,7 @@ const TomorrowWeatherCard: React.FC<TomorrowWeatherCardProps> = ({ temperature, 
       <Typography
         variant="h4"
         color="black"
-        sx={{ margin: '8px 0', position: 'relative', top: '-170px' }}
+        sx={{ margin: '8px 0', position: 'relative', top: '-70px' }}
       >
         {weatherName}
       </Typography>
@@ -50,7 +50,7 @@ const TomorrowWeatherCard: React.FC<TomorrowWeatherCardProps> = ({ temperature, 
         variant="h3"
         component="div"
         color="black"
-        sx={{ margin: '8px 0', position: 'relative', top: '-180px' }}
+        sx={{ margin: '8px 0', position: 'relative', top: '-70px' }}
       >
         {temperature} °C
       </Typography>
