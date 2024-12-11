@@ -3,13 +3,11 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
 interface TomorrowWeatherCardProps {
-  temperature: string; // Temperatura para mañana
-  weatherName: string; // Descripción del clima (name del símbolo)
   imageUrl?: string; // Nueva prop opcional para la URL de la imagen
 
 }
 
-const TomorrowWeatherCard: React.FC<TomorrowWeatherCardProps> = ({ temperature, weatherName,  imageUrl }) => {
+const TomorrowWeatherCard: React.FC<TomorrowWeatherCardProps> = ({ imageUrl }) => {
   return (
     <Paper
       sx={{
@@ -39,21 +37,7 @@ const TomorrowWeatherCard: React.FC<TomorrowWeatherCardProps> = ({ temperature, 
       >
         Mañana
       </Typography>
-      <Typography
-        variant="h4"
-        color="black"
-        sx={{ margin: '8px 0', position: 'relative', top: 'auto' }}
-      >
-        {weatherName}
-      </Typography>
-      <Typography
-        variant="h3"
-        component="div"
-        color="black"
-        sx={{ margin: '8px 0', position: 'relative', top: 'auto' }}
-      >
-        {temperature} °C
-      </Typography>
+
 
     </Paper>
   );

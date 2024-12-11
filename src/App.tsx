@@ -35,6 +35,7 @@ function App() {
     windGust: '',
     cloudCoverage: '',
     windName: '',
+
   });
 
   const [tomorrowData, setTomorrowData] = useState({
@@ -42,6 +43,11 @@ function App() {
     weatherName: "",
     imagen: "",
   });
+
+  const [RainCard, setRainCard] = useState({
+    imagen: "",
+  });
+
 
   const Images: { [key: string]: string } = {
     GentleBreeze: "https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/Gentle%20Breeze.webp",
@@ -81,6 +87,7 @@ function App() {
 
   
   const parseWeatherData = (xml: Document) => {
+    
     const temperature = (parseFloat(xml.getElementsByTagName('temperature')[0]?.getAttribute('value') || '0') - 273.15).toFixed(1) + '°C';
     const weatherDescription = xml.getElementsByTagName('symbol')[0]?.getAttribute('name') || '';
     const visibility = (parseFloat(xml.getElementsByTagName('visibility')[0]?.getAttribute('value') || '0') / 1000).toFixed(1) + ' km';
@@ -90,8 +97,20 @@ function App() {
     const windDirection = xml.getElementsByTagName('windDirection')[0]?.getAttribute('code') || '';
     const windGust = xml.getElementsByTagName('windGust')[0]?.getAttribute('gust') + ' m/s';
     const cloudCoverage = xml.getElementsByTagName('clouds')[0]?.getAttribute('all') + '%';
-    const windName = xml.getElementsByTagName('windSpeed')[0]?.getAttribute('name') || '';
-  
+    const windName = xml.getElementsByTagName('windSpeed')[0]?.getAttribute('name') || '';  
+    const precipitationToday = parseFloat(
+      xml.getElementsByTagName("precipitation")[0]?.getAttribute("probability") || "0"
+    );
+    let imageProbability = "";
+
+    if (precipitationToday >= 0.7 && precipitationToday < 1) {
+      imageProbability = "🌧️"; 
+    }else if(precipitationToday < 0.7) {
+      imageProbability = "☁️";
+    }else if(precipitationToday == 1) {
+      imageProbability = "⛈️";
+    }
+
     return {
       temperature,
       weatherDescription,
