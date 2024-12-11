@@ -29,10 +29,12 @@ function HamburgerMenu(): JSX.Element {
             '&:focus': {
               outline: 'none', 
               color: 'black',
+              
             },
+            
           }}
         >
-          <MenuIcon />
+          <MenuIcon sx={{ fontSize: 36 }}/>
         </IconButton>
 
       </Grid>

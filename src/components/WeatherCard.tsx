@@ -27,7 +27,7 @@ export default function WeatherCard({
       sx={{
         p: 3,
         display: 'flex',
-        height: '300px',
+        height: '400px',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
@@ -42,7 +42,7 @@ export default function WeatherCard({
         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', // Sombra
       }}
     >
-      <Typography variant="h2" color="primary" gutterBottom>
+      <Typography variant="h2" color="black" gutterBottom>
         {title}
       </Typography>
       <Typography variant="h4" color="black" gutterBottom>
@@ -57,10 +57,10 @@ export default function WeatherCard({
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} >
         {details.map((detail, index) => (
           <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }} sx={{ backgroundColor: 'white', padding: '16px', borderRadius: '8px' }}>
-            <Typography variant="body1" color="textSecondary" sx={{ width: '100px' , fontWeight: 'bold'}}  >
+            <Typography variant="body1" color="textSecondary" sx={{ width: '100px', fontWeight: 'bold' }}  >
               {detail.label}
             </Typography>
-            <Typography variant="subtitle1" sx={{ width: '100px' , color: 'black'}}  >{detail.value}</Typography>
+            <Typography variant="subtitle1" sx={{ width: '100px', color: 'black' }}  >{detail.value}</Typography>
           </Grid>
         ))}
       </Grid>

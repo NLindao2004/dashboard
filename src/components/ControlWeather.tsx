@@ -52,7 +52,7 @@ export default function ControlWeather({
         flexDirection: 'column',
       }}
     >
-      <Typography mb={2} component="h3" variant="h6" color="primary">
+      <Typography mb={2} component="h3" variant="h4" color="black">
         Variables Meteorológicas
       </Typography>
 
