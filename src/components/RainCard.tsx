@@ -2,12 +2,12 @@ import React from 'react';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
-interface TomorrowWeatherCardProps {
-  imageUrl?: string; // Nueva prop opcional para la URL de la imagen
+interface RainCardProps {
+  imageUrl: string; 
 
 }
 
-const TomorrowWeatherCard: React.FC<TomorrowWeatherCardProps> = ({ imageUrl }) => {
+const RainCard: React.FC<RainCardProps> = ({ imageUrl }) => {
   return (
     <Paper
       sx={{
@@ -18,7 +18,7 @@ const TomorrowWeatherCard: React.FC<TomorrowWeatherCardProps> = ({ imageUrl }) =
         justifyContent: 'center', // Centra el contenido verticalmente
         textAlign: 'center',
         width: 'auto', //290
-        height: 'auto',
+        height: '222px',
         backgroundImage: imageUrl
         ? `url(${imageUrl})`
         : `url('https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/Lluvia.webp')`, // Usamos la imagen si se proporciona
@@ -29,18 +29,9 @@ const TomorrowWeatherCard: React.FC<TomorrowWeatherCardProps> = ({ imageUrl }) =
       }}
     >
 
-      <Typography
-        variant="h2"
-        component="div"
-        color="black"
-        sx={{ margin: '8px 0', position: 'relative', top: 'auto' }}
-      >
-        Mañana
-      </Typography>
-
 
     </Paper>
   );
 };
 
-export default TomorrowWeatherCard;
+export default RainCard;

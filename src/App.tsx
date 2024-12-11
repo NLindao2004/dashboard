@@ -23,7 +23,7 @@ function App() {
   const [cloudsData, setCloudsData] = useState<number[]>([]);
   const [timeLabels, setTimeLabels] = useState<string[]>([]);
   const [selectedVariable, setSelectedVariable] = useState<string>("humidity");
-  const [loading, setLoading] = useState(true);  
+  const [loading, setLoading] = useState(true);
   const [weatherData, setWeatherData] = useState({
     temperature: '',
     weatherDescription: '',
@@ -44,7 +44,7 @@ function App() {
     imagen: "",
   });
 
-  const [RainCard, setRainCard] = useState({
+  const [rainCardState, setRainCardState] = useState({
     imagen: "",
   });
 
@@ -72,9 +72,9 @@ function App() {
     const savedTextXML = localStorage.getItem("openWeatherMap") || "";
     const expiringTime = localStorage.getItem("expiringTime");
     const savedCity = localStorage.getItem("city") || "";
-    return { savedTextXML, expiringTime , savedCity };
+    return { savedTextXML, expiringTime, savedCity };
   };
-  
+
   const saveToLocalStorage = (data: string, city: string) => {
     const nowTime = new Date().getTime();
     const hours = 0.01; // Ajusta el tiempo como desees
@@ -85,9 +85,9 @@ function App() {
     localStorage.setItem("expiringTime", expiringTime.toString());
   };
 
-  
+
   const parseWeatherData = (xml: Document) => {
-    
+
     const temperature = (parseFloat(xml.getElementsByTagName('temperature')[0]?.getAttribute('value') || '0') - 273.15).toFixed(1) + '°C';
     const weatherDescription = xml.getElementsByTagName('symbol')[0]?.getAttribute('name') || '';
     const visibility = (parseFloat(xml.getElementsByTagName('visibility')[0]?.getAttribute('value') || '0') / 1000).toFixed(1) + ' km';
@@ -97,19 +97,7 @@ function App() {
     const windDirection = xml.getElementsByTagName('windDirection')[0]?.getAttribute('code') || '';
     const windGust = xml.getElementsByTagName('windGust')[0]?.getAttribute('gust') + ' m/s';
     const cloudCoverage = xml.getElementsByTagName('clouds')[0]?.getAttribute('all') + '%';
-    const windName = xml.getElementsByTagName('windSpeed')[0]?.getAttribute('name') || '';  
-    const precipitationToday = parseFloat(
-      xml.getElementsByTagName("precipitation")[0]?.getAttribute("probability") || "0"
-    );
-    let imageProbability = "";
-
-    if (precipitationToday >= 0.7 && precipitationToday < 1) {
-      imageProbability = "🌧️"; 
-    }else if(precipitationToday < 0.7) {
-      imageProbability = "☁️";
-    }else if(precipitationToday == 1) {
-      imageProbability = "⛈️";
-    }
+    const windName = xml.getElementsByTagName('windSpeed')[0]?.getAttribute('name') || '';
 
     return {
       temperature,
@@ -124,50 +112,73 @@ function App() {
       windName,
     };
   };
-  
+
+
+
+  const parseRainCard = (xml: Document) => {
+
+    const precipitationToday = parseFloat(
+      xml.getElementsByTagName("precipitation")[0]?.getAttribute("probability") || "0"
+    );
+
+    let imageProbability = "";
+
+    if (precipitationToday >= 0.7 && precipitationToday < 1) {
+      imageProbability = "https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/cloudRain.gif";
+    } else if (precipitationToday < 0.7) {
+      imageProbability = "https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/cloudSunny.gif";
+    } else if (precipitationToday == 1) {
+      imageProbability = "https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/heavyRain.gif";
+    }
+
+    return {
+      imagen: imageProbability,
+    };
+  };
+
   const parseForecastData = (xml: Document, maxEntries = 6) => {
     const times = xml.getElementsByTagName("time");
     const humidityValues: number[] = [];
     const precipitationValues: number[] = [];
     const cloudsValues: number[] = [];
     const labels: string[] = [];
-  
+
     for (let i = 0; i < Math.min(maxEntries, times.length); i++) {
       const time = times[i];
       const dateStart = (time.getAttribute("from") || "").split("T")[1] || "";
       const precipitation = time.getElementsByTagName("precipitation")[0]?.getAttribute("probability") || "0";
       const humidity = time.getElementsByTagName("humidity")[0]?.getAttribute("value") || "0";
       const clouds = time.getElementsByTagName("clouds")[0]?.getAttribute("all") || "0";
-  
+
       humidityValues.push(parseFloat(humidity));
       precipitationValues.push(parseFloat(precipitation));
       cloudsValues.push(parseFloat(clouds));
       labels.push(dateStart);
     }
-  
+
     return { humidityValues, precipitationValues, cloudsValues, labels };
   };
 
-  
+
   const processTomorrowData = (times: HTMLCollectionOf<Element>) => {
     let tomorrowTemperature = "";
     let tomorrowWeatherName = "";
     let imageProbability = "";
-  
+
     // Obtiene la fecha actual y el día siguiente
     const currentDate = new Date();
     const tomorrowDate = new Date(currentDate);
     tomorrowDate.setDate(currentDate.getDate() + 1);
-  
+
     // Convierte el día siguiente al formato de fecha YYYY-MM-DD
     const tomorrowString = tomorrowDate.toISOString().split("T")[0];
-  
+
     // Recorre los elementos <time> para encontrar el bloque correspondiente
     for (let i = 0; i < times.length; i++) {
       const time = times[i];
       const fromDate = time.getAttribute("from") || "";
       const fromDateString = fromDate.split("T")[0]; // Obtiene la parte de la fecha (YYYY-MM-DD)
-  
+
       // Si la fecha corresponde al día siguiente
       if (fromDateString === tomorrowString) {
         tomorrowTemperature = (
@@ -176,22 +187,22 @@ function App() {
           ) - 273.15
         ).toFixed(1); // Convierte Kelvin a Celsius
         tomorrowWeatherName = time.getElementsByTagName("symbol")[0]?.getAttribute("name") || "";
-  
+
         const probability = parseFloat(
           time.getElementsByTagName("precipitation")[0]?.getAttribute("probability") || "0"
         );
-  
+
         // Asigna la imagen de acuerdo a la probabilidad de precipitación
         if (probability > 0.6) {
           imageProbability = "https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/Lluvia.webp";
         } else {
           imageProbability = "https://raw.githubusercontent.com/NLindao2004/dashboard/main/src/Imagenes/sol.webp";
         }
-  
+
         break; // Detiene el bucle al encontrar la coincidencia
       }
     }
-  
+
     // Devuelve los datos procesados
     return {
       temperature: tomorrowTemperature,
@@ -200,9 +211,9 @@ function App() {
     };
   };
 
-  
+
   const fetchWeatherData = async (city: string = "Guayaquil") => {
-     // Verifica la ciudad
+    // Verifica la ciudad
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/forecast?q=${city}&mode=xml&appid=2f997379b9826ef9e1a4fb69507743af`
     );
@@ -218,27 +229,30 @@ function App() {
 
 
   useEffect(() => {
-    
+
     const fetchData = async () => {
       const { savedTextXML, expiringTime, savedCity } = getLocalStorageData();
       const nowTime = new Date().getTime();
       let xmlData = savedTextXML;
 
-      console.log('Ciudad nueva',{owm})
+      console.log('Ciudad nueva', { owm })
       if (!expiringTime || nowTime > parseInt(expiringTime) || savedCity !== owm) {
         xmlData = await fetchWeatherData(owm);
         saveToLocalStorage(xmlData, owm);
       }
-  
+
       if (xmlData) {
         const parser = new DOMParser();
         const xml = parser.parseFromString(xmlData, "application/xml");
         const times = xml.getElementsByTagName("time");
-        
+
         // Datos para las tarjetas
         const weatherInfo = parseWeatherData(xml);
         setWeatherData(weatherInfo);
-  
+
+        const imgRain = parseRainCard(xml);
+        setRainCardState(imgRain);
+
         // Datos para la tabla y el gráfico
         const { humidityValues, precipitationValues, cloudsValues, labels } = parseForecastData(xml);
         setHumidityData(humidityValues);
@@ -246,16 +260,16 @@ function App() {
         setCloudsData(cloudsValues);
         setTimeLabels(labels);
 
-      // Procesar los datos para mañana
-      const tomorrowInfo = processTomorrowData(times);
-      setTomorrowData(tomorrowInfo);
-  
+        // Procesar los datos para mañana
+        const tomorrowInfo = processTomorrowData(times);
+        setTomorrowData(tomorrowInfo);
+
         // Obtención de datos por ciudades
         const dataToItems: Item[] = [];
         for (const city of cities) {
           const cityData = await fetchWeatherData(city);
           const cityXml = parser.parseFromString(cityData, "application/xml");
-  
+
           const temperature = (
             parseFloat(cityXml.getElementsByTagName("temperature")[0]?.getAttribute("value") || "0") - 273.15
           ).toFixed(1) + "°C";
@@ -264,27 +278,27 @@ function App() {
           const precipitationProbability = parseFloat(
             cityXml.getElementsByTagName("precipitation")[0]?.getAttribute("probability") || "0"
           );
-                    
+
           let precipitation = "";
           if (precipitationProbability > 0.7 && precipitationProbability < 1) {
-            precipitation = "🌧️"; 
-          }else if(precipitationProbability < 0.7) {
+            precipitation = "🌧️";
+          } else if (precipitationProbability < 0.7) {
             precipitation = "☁️";
-          }else if(precipitationProbability == 1) {
+          } else if (precipitationProbability == 1) {
             precipitation = "⛈️";
           }
-          
+
           dataToItems.push({ city, temperature, humidity, precipitation, clouds });
-          
+
         }
         setItems(dataToItems);
         setLoading(false);
       }
     };
-  
+
     fetchData();
   }, [owm]);
-  
+
 
 
 
@@ -376,8 +390,17 @@ function App() {
           />
         </Grid>
 
-        <Grid container spacing={3} direction={'column'} size={{ xs: 12, xl:3}}>  
-          <Grid size={{ xs: 12}}>
+        <Grid container spacing={3} direction={'column'} size={{ xs: 12, xl: 3 }}>
+
+
+          <Grid size={{ xs: 12 }}>
+
+            <RainCard
+              imageUrl={rainCardState.imagen}
+            />
+
+          </Grid>
+          <Grid size={{ xs: 12 }}>
 
             <TomorrowWeatherCard
               temperature={tomorrowData.temperature}
@@ -386,22 +409,14 @@ function App() {
             />
           </Grid>
 
-          <Grid size={{ xs: 12}}>
-
-            <RainCard
-              temperature={tomorrowData.temperature}
-              weatherName={tomorrowData.weatherName}
-              imageUrl={tomorrowData.imagen}
-            />
-          </Grid>
-        </Grid>  
+        </Grid>
       </Grid>
 
 
       {/* Tabla */}
       <Grid container spacing={6} size={12} id="tabla">
         <Grid size={12}>
-          <TableWeather itemsIn={items} loading={loading}/>
+          <TableWeather itemsIn={items} loading={loading} />
         </Grid>
       </Grid>
 
