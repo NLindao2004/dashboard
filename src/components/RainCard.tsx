@@ -20,7 +20,7 @@ const RainCard: React.FC<RainCardProps> = ({ imageUrl }) => {
         height: '222px',
         backgroundImage: imageUrl
         ? `url(${imageUrl})`
-        : `url('https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/Lluvia.webp')`, // Usamos la imagen si se proporciona
+        : `url('https://raw.githubusercontent.com/NLindao2004/dashboard/refs/heads/main/src/Imagenes/loading.gif')`, 
         backgroundSize: 'cover', // Ajustar imagen para cubrir todo
         backgroundPosition: 'center', // Centrar la imagen
         color: '#ffffff', // Cambiar el color del texto a blanco para mejor contraste
