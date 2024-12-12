@@ -223,10 +223,14 @@ function App() {
   };
 
   const handleSearch = (city: string) => {
-    setOwm(city); // Actualiza la ciudad
+    const isValidCity = cities.includes(city);
+    if (!isValidCity) {
+      alert(`La ciudad ${city} no es válida. Se utilizará Guayaquil por defecto.`);
+    }
+    const newCity = isValidCity ? city : "Guayaquil";
+    setOwm(newCity); // Actualiza la ciudad
     console.log(owm);
   };
-
 
   useEffect(() => {
 
@@ -249,7 +253,7 @@ function App() {
         // Datos para las tarjetas
         const weatherInfo = parseWeatherData(xml);
         setWeatherData(weatherInfo);
-
+        
         const imgRain = parseRainCard(xml);
         setRainCardState(imgRain);
 
@@ -342,6 +346,7 @@ function App() {
               { label: 'Presión', value: weatherData.pressure },
             ]}
             imageUrl={Images[weatherData.weatherDescription.replace(/\s+/g, '')]}
+            loading={loading} 
           />
         </Grid>
         <Grid size={{ xs: 12, xl: 6 }}>
@@ -356,6 +361,7 @@ function App() {
               { label: 'Nubes', value: weatherData.cloudCoverage },
             ]}
             imageUrl={Images[weatherData.windName.replace(/\s+/g, '')]}
+            loading={loading}
           />
         </Grid>
       </Grid>
