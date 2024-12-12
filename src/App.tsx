@@ -63,7 +63,7 @@ function App() {
 
   const cities = [
     "Quito", "Cuenca", "Guaranda", "Azogues", "Tulcán", "Riobamba", "Latacunga", "Machala", "Esmeraldas", "Puerto Baquerizo Moreno", "Ibarra", "Loja", "Babahoyo",
-    "Portoviejo", "Macas", "Tena", "Puyo", "Santa Elena", "Santo Domingo", "Nueva Loja", "Ambato", "Zamora"
+    "Portoviejo", "Macas", "Tena", "Puyo", "Santa Elena", "Santo Domingo", "Nueva Loja", "Ambato", "Zamora", "Guayaquil","Pichincha"
   ];
 
 
